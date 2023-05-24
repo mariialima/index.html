@@ -9,7 +9,7 @@
     <style>
         body {
             width: 100%;
-            height: 180vh;
+            height: 140vh;
             background-image: linear-gradient(0deg, rgb(193, 136, 175), rgb(199, 24, 161));
             overflow: hidden;
 
@@ -17,22 +17,34 @@
 
         .foguete {
             position: absolute;
-            top: 1000px;
+            top: 550px;
             left: 750px;
         }
 
         .planeta {
-            position: absolute;
-            top: 1000px;
-            left: 55%;
-            margin-left: -500px;
+            position: fixed;
+            top: 560px;
+            left: 22%;
+
         }
     </style>
 </head>
 
 <body>
     <img src="planeta.png" class="planeta" width="900px">
-    <img id="foguete" src="foguete.gif" width="100px" class="foguete">
+    <img onclick="Tocar1();" id="foguete" src="foguete.gif" width="100px" class="foguete">
+
+    <audio id="audio1" autoplay="">
+        <source src="contagem_regressiva.mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="audio2"  autoplay="">
+        <source src="lancamento_foguete.mp3" type="audio/mp3">
+    </audio>
+
+    <audio id="audio3"  autoplay="">
+        <source src="houston_problem.mp3" type="audio/mp3">
+    </audio>
 
 </body>
 
@@ -40,58 +52,84 @@
 
 
 <script>
-    data = new Date()
-    tempo_inicial = data.getTime()
-    document.onkeydown = Pega_Tecla;
+    function Tocar1() {
+        audio1 = document.getElementById('audio1');
+        audio1.play(); //tocar imediatamente
+        temporizador = setTimeout(Subir,18000) //depois de 18s
 
-    function Pega_Tecla(e) {
-        e = e || window.event;
+        temporizador2 = setTimeout(Tocar2, 25000)  //depois de 25s
+        temporizador3 = setTimeout(Tocar3, 40000)  //depois de 40s
+    
+    }
 
-        tecla = e.keyCode;
-        console.log(tecla); // MOSTRA O CÓDIGO DA TECLA PRESSIONADA
+    function Tocar2()
+    {
+        audio2 = document.getElementById('audio2');
+        audio2.play();
+    }
+
+    function Tocar3()
+    {
+        audio3 = document.getElementById('audio3');
+        audio3.play();
+    }
+
+       
+
         data = new Date()
-        tempo_final = data.getTime()
-        if (tempo_final - tempo_inicial > 1000) {
-            tempo_inicial = tempo_final
+        tempo_inicial = data.getTime()
 
-            if (tecla == 37) {
-                x = x - 20
-            }
-            if (tecla == 39) {
-                x = x + 20
+        document.onkeydown = Pega_Tecla;
+
+        function Pega_Tecla(e) {
+            e = e || window.event;
+
+            tecla = e.keyCode;
+            console.log(tecla); // MOSTRA O CÓDIGO DA TECLA PRESSIONADA
+
+            data = new Date()
+            tempo_final = data.getTime()
+
+            if (tempo_final - tempo_inicial > 1000) 
+            {
+                tempo_inicial - tempo_final
+
+                if (tecla == 37) {
+                    x = x - 20
+                }
+                if (tecla == 39) {
+                    x = x + 20
+                }
             }
         }
 
-    }
+        x = 750
+        y = 10
+        TOPO = ""
+        ESQUERDA = ""
 
-    temporizador = setTimeout(Subir, 1000)
-    x = 750
-    y = 500
-    TOPO = ""
-    ESQUERDA = ""
 
-    function Subir() {
-        TOPO = y + "px"
-        $("#foguete").animate({
-            top: TOPO
-        }, 1000)
-        temporizador = null
-        temporizador = setInterval(Descer, 1000)
-    }
 
-    function Descer() {
-        y = y + 20
-
-        if (y > 1000) {
-            y = 1000
+        function Subir() {
+            TOPO = y + "px";
+            $("#foguete").animate({top: TOPO}, 20000)
+            temporizador = null
+            temporizador = setInterval(Descer, 1000)
         }
-        TOPO = y + "px"
-        ESQUERDA = x + "px"
-        $("#foguete").animate({
-            left: ESQUERDA,
-            top: TOPO
-        }, 1000)
-    }
+
+        function Descer() {
+            y = y + 20
+            if (y>700)
+            {
+                y = 700
+            }
+            TOPO = y + "px"
+            ESQUERDA = x + "px"
+            $("#foguete").animate({left: ESQUERDA,top: TOPO}, 1000)
+            
+        }
+    
 </script>
 
 </html>
+
